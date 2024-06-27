@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery AJAX with Div Table</title>
+    <!-- 引入jQuery库 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: #0E1525; /* 页面背景色 */
+        }
+        .div-table {
+            width: 100%;
+            background-color: #0E1525; /* 深蓝色背景 */
+            color: white;
+        }
+        .div-table-row {
+            display: flex;
+        }
+        .div-table-cell {
+            flex: 1; /* 让每个单元格宽度相等 */
+            padding: 10px;
+            /*box-sizing: border-box;
+            border: 1px solid #ddd; /* 单元格边框 */
+        }
+        .left-cell {
+            text-align: right;
+            color: #8BB7D3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="div-table">
+        <!-- 表格行 -->
+        <div class="div-table-row">
+            <div class="div-table-cell left-cell">行1, 列1</div>
+            <div class="div-table-cell right-cell">行1, 列2</div>
+        </div>
+        <div class="div-table-row">
+            <div class="div-table-cell left-cell">行2, 列1</div>
+            <div class="div-table-cell right-cell">行2, 列2</div>
+        </div>
+        <div class="div-table-row">
+            <div class="div-table-cell left-cell">行3, 列1</div>
+            <div class="div-table-cell right-cell">行3, 列2</div>
+        </div>
+        <div class="div-table-row">
+            <div class="div-table-cell left-cell">行4, 列1</div>
+            <div class="div-table-cell right-cell">行4, 列2</div>
+        </div>
+    </div>
+
+    <script>
+        // 使用jQuery的ready方法确保DOM完全加载
+        $(document).ready(function() {
+            // 页面加载完成后发起AJAX GET请求
+            $.ajax({
+                url: 'http://10.193.2.3:5000/shaxian/WSMP/GetIndicatorDataByObjectId?objectId=9207', // 替换成实际的API URL
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log('请求成功，返回的数据：', data);
+
+                    for(var i=0; i<4; i++){
+                        console.log(data.data[i])
+                        $(".left-cell").eq(i).text(data.data[i].indicatorName + " :");
+                        $(".right-cell").eq(i).text(data.data[i].indicatorValue + data.data[i].indicatorUnitName);
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('请求失败：', textStatus, errorThrown);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
